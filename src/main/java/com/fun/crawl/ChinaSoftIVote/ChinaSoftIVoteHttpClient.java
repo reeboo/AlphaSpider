@@ -1,0 +1,64 @@
+package com.fun.crawl.ChinaSoftIVote;
+
+import com.fun.util.HttpClientUtil;
+import com.fun.util.JsonUtils;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Maps;
+import com.google.common.io.Files;
+
+import java.io.File;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+
+/**
+ * 实现描述: ChinaSoftIVote
+ *
+ * @version v1.0.0
+ * @author: reeboo
+ * @since: 2016-08-16 14:45
+ */
+public class ChinaSoftIVoteHttpClient {
+    public static void main(String[] args) throws Exception {
+        final AtomicInteger totalVote = new AtomicInteger(0);
+        final ThreadPoolExecutor executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, Runtime.getRuntime().availableProcessors() * 2,
+                60L, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>(100), new ThreadPoolExecutor.CallerRunsPolicy());
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                executor.shutdownNow();
+            }
+        });
+
+        List<String> ipFile = Files.readLines(new File("/Users/reeboo/ip"), Charset.forName("UTF-8"));
+        for (final String ipPort : ipFile) {
+            final Map<String, String> para = Maps.newHashMap();
+            para.put("optionid", "111");
+            para.put("tpid", "16");
+
+            executor.submit(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < 100; i++) {
+                        String response = HttpClientUtil.getInstance(Splitter.on(":").splitToList(ipPort).get(0), Splitter.on(":").splitToList(ipPort).get(1))
+                                .post("http://enterprises.chinasourcing.org.cn/Vote/AnswerSave", para);
+                        VoteResult result = JsonUtils.unmarshalFromString(response, VoteResult.class);
+                        System.err.println(ipPort);
+                        System.err.println(response);
+                        if (result == null || result.getErrcode() < 0) {
+                            break;
+                        }
+                        totalVote.getAndIncrement();
+                        System.out.println("==========="+totalVote.get());
+                    }
+                }
+            });
+        }
+    }
+
+}
