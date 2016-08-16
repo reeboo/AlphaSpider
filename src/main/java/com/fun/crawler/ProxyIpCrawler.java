@@ -1,4 +1,4 @@
-package com.fun.crawl;
+package com.fun.crawler;
 
 import com.google.common.io.Files;
 import org.apache.commons.lang.math.NumberUtils;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author: reeboo
  * @since: 2016-08-16 11:41
  */
-public class ProxyIp implements PageProcessor {
+public class ProxyIpCrawler implements PageProcessor {
     @Override
     public void process(Page page) {
 
@@ -64,7 +64,7 @@ public class ProxyIp implements PageProcessor {
     }
 
     public static void main(String[] args) throws Exception {
-        Spider.create(new ProxyIp()).thread(10)
+        Spider.create(new ProxyIpCrawler()).thread(10)
                 .addUrl("http://www.kxdaili.com/ipList/1.html#ip")
                 .addUrl("http://proxy.mimvp.com/free.php?proxy=out_tp&sort=&pageindex=1")
                 .start();

@@ -1,7 +1,7 @@
-package com.fun.crawl.ChinaSoftIVote;
+package com.fun.crawler.ChinaSoftIVote;
 
 import com.fun.util.HttpClientUtil;
-import com.fun.util.JsonUtils;
+import com.fun.util.JsonUtil;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
@@ -52,12 +52,12 @@ public class ChinaSoftIVoteHttpClient {
                     for (int i = 0; i < 100; i++) {
                         String response = HttpClientUtil.getInstance(Splitter.on(":").splitToList(ipPort).get(0), Splitter.on(":").splitToList(ipPort).get(1))
                                 .post("http://enterprises.chinasourcing.org.cn/Vote/AnswerSave", para);
-                        VoteResult result = JsonUtils.unmarshalFromString(response, VoteResult.class);
+                        VoteResult result = JsonUtil.unmarshalFromString(response, VoteResult.class);
                         if (result == null || result.getErrcode() < 0) {
                             break;
                         }
                         totalVote.getAndIncrement();
-                        logger.debug("==========="+totalVote.get());
+                        logger.debug("===========" + totalVote.get());
                     }
                 }
             });

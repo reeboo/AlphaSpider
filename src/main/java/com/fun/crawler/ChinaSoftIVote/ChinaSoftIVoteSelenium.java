@@ -1,4 +1,4 @@
-package com.fun.crawl.ChinaSoftIVote;
+package com.fun.crawler.ChinaSoftIVote;
 
 import com.google.common.io.Files;
 import org.openqa.selenium.Proxy;

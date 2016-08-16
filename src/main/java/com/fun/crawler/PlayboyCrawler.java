@@ -1,4 +1,4 @@
-package com.fun.crawl;
+package com.fun.crawler;
 
 import com.google.common.io.Files;
 import us.codecraft.webmagic.Page;
@@ -17,7 +17,7 @@ import java.nio.charset.Charset;
  * @author: reeboo
  * @since: 2016-08-03 19:26
  */
-public class PlayboyProcessor implements PageProcessor {
+public class PlayboyCrawler implements PageProcessor {
     @Override
     public void process(Page page) {
         if (page.getUrl().get().contains("htm_data")) {
@@ -47,6 +47,6 @@ public class PlayboyProcessor implements PageProcessor {
     }
 
     public static void main(String[] args) throws Exception {
-        Spider.create(new PlayboyProcessor()).thread(10).addUrl("http://cl.axjqv.com/thread0806.php?fid=22").start();
+        Spider.create(new PlayboyCrawler()).thread(10).addUrl("http://cl.axjqv.com/thread0806.php?fid=22").start();
     }
 }

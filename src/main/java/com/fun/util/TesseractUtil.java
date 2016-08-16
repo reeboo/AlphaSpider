@@ -10,9 +10,6 @@ package com.fun.util;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -23,15 +20,13 @@ import java.io.IOException;
 /**
  * 实现描述：tesseract图像识别服务
  *
- * @author reeboo
- * @version v1.0.0
- * @see
- * @since 2014年9月4日 下午4:38:13
+ * @author: reeboo
+ * @since: 2016-08-16 19:25
  */
 public class TesseractUtil {
 
     /**
-     * 从图片中识别整数
+     * 从图片中识别内容
      *
      * @param imageFile
      * @return
@@ -41,6 +36,15 @@ public class TesseractUtil {
         return recognizeInteger(imageFile, 3, true);
     }
 
+    /**
+     * 从图片中识别内容
+     *
+     * @param imageFile
+     * @param enlargeTimes
+     * @param isEnlarge
+     * @return
+     * @throws IOException
+     */
     public static String recognizeInteger(File imageFile, int enlargeTimes, boolean isEnlarge) throws IOException {
         // 放大3倍，提高识别率
         File tmpScaledImage = File.createTempFile("tesseract-ocr-scaled", null);
@@ -53,7 +57,6 @@ public class TesseractUtil {
         File tmpOutputText = new File(tmpScaledImage.getAbsolutePath() + ".out.txt");
 
         try {
-            // 执行tesseract
             int exitCode = Runtime.getRuntime().exec(new String[]{"tesseract", // command
                     tmpScaledImage.getAbsolutePath(), // imagename
                     tmpOutputBase.getAbsolutePath(), // outputbase
@@ -75,7 +78,14 @@ public class TesseractUtil {
         return StringUtils.EMPTY;
     }
 
-    // 放大图片
+    /**
+     * 放大图片
+     *
+     * @param imageFile
+     * @param times
+     * @param targetFile
+     * @throws IOException
+     */
     private static void scaled(File imageFile, int times, File targetFile) throws IOException {
         BufferedImage image = ImageIO.read(imageFile);
         int targetWidth = image.getWidth() * times;

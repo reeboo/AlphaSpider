@@ -36,10 +36,8 @@ import java.util.Map.Entry;
 /**
  * 实现描述：http访问客户端工具类
  *
- * @author reeboo
- * @version v1.0.0
- * @see
- * @since 2013-8-2 下午5:21:09
+ * @author: reeboo
+ * @since: 2016-08-16 19:25
  */
 @SuppressWarnings("deprecation")
 public class HttpClientUtil extends HttpClientBuilder {

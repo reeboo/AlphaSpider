@@ -1,4 +1,4 @@
-package com.fun.crawl.ChinaSoftIVote;
+package com.fun.crawler.ChinaSoftIVote;
 
 /**
  * 实现描述: VoteResult

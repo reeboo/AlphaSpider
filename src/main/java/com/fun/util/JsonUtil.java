@@ -16,13 +16,11 @@ import java.util.Map;
 /**
  * 
  * 实现描述：Json处理方法，封装fastJson
- * 
- * @author simon
- * @version v1.0.0
- * @see
- * @since 2013-8-2 下午5:31:26
+ *
+ * @author: reeboo
+ * @since: 2016-08-16 19:25
  */
-public class JsonUtils {
+public class JsonUtil {
 
     public static byte[] marshalToByte(Object obj) {
         return JSON.toJSONBytes(obj); // 默认为UTF-8
