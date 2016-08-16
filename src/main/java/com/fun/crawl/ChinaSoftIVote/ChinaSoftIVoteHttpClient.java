@@ -5,6 +5,8 @@ import com.fun.util.JsonUtils;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -24,6 +26,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since: 2016-08-16 14:45
  */
 public class ChinaSoftIVoteHttpClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(ChinaSoftIVoteHttpClient.class);
+
     public static void main(String[] args) throws Exception {
         final AtomicInteger totalVote = new AtomicInteger(0);
         final ThreadPoolExecutor executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, Runtime.getRuntime().availableProcessors() * 2,
@@ -48,13 +53,11 @@ public class ChinaSoftIVoteHttpClient {
                         String response = HttpClientUtil.getInstance(Splitter.on(":").splitToList(ipPort).get(0), Splitter.on(":").splitToList(ipPort).get(1))
                                 .post("http://enterprises.chinasourcing.org.cn/Vote/AnswerSave", para);
                         VoteResult result = JsonUtils.unmarshalFromString(response, VoteResult.class);
-                        System.err.println(ipPort);
-                        System.err.println(response);
                         if (result == null || result.getErrcode() < 0) {
                             break;
                         }
                         totalVote.getAndIncrement();
-                        System.out.println("==========="+totalVote.get());
+                        logger.debug("==========="+totalVote.get());
                     }
                 }
             });
