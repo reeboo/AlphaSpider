@@ -15,7 +15,10 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  * 实现描述：tesseract图像识别服务
@@ -32,9 +35,23 @@ public class TesseractUtil {
      * @return
      * @throws java.io.IOException
      */
-    public static String recognizeInteger(File imageFile) throws IOException {
-        return recognizeInteger(imageFile, 3, true);
+    public static String recognize(File imageFile) throws IOException {
+        return recognize(imageFile, 3, true);
     }
+
+    /**
+     * 识别url内容
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    public static String recognize(URL url) throws IOException {
+        File tmpFile = getFileFromUrl(url);
+        String result = recognize(tmpFile);
+        tmpFile.delete();
+        return result;
+    }
+
 
     /**
      * 从图片中识别内容
@@ -45,7 +62,7 @@ public class TesseractUtil {
      * @return
      * @throws IOException
      */
-    public static String recognizeInteger(File imageFile, int enlargeTimes, boolean isEnlarge) throws IOException {
+    public static String recognize(File imageFile, int enlargeTimes, boolean isEnlarge) throws IOException {
         // 放大3倍，提高识别率
         File tmpScaledImage = File.createTempFile("tesseract-ocr-scaled", null);
         tmpScaledImage.deleteOnExit();
@@ -98,6 +115,27 @@ public class TesseractUtil {
         g2.drawImage(image, 0, 0, targetWidth, targetHeight, null);
         g2.dispose();
         ImageIO.write(tmp, "png", targetFile);
+    }
+
+    /**
+     * 从url获取文件
+     *
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    private static File getFileFromUrl(URL url) throws IOException {
+        File tmpImage = File.createTempFile("tesseract-ocr-download", null);
+        InputStream in = url.openConnection().getInputStream();
+        FileOutputStream fos = new FileOutputStream(tmpImage);
+        byte[] buf = new byte[1024];
+        int len = 0;
+        while ((len = in.read(buf)) != -1) {
+            fos.write(buf, 0, len);
+        }
+        fos.flush();
+        fos.close();
+        return tmpImage;
     }
 
 }

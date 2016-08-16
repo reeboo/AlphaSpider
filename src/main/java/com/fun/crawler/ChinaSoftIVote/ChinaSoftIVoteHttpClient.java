@@ -30,8 +30,8 @@ public class ChinaSoftIVoteHttpClient {
     private static final Logger logger = LoggerFactory.getLogger(ChinaSoftIVoteHttpClient.class);
 
     public static void main(String[] args) throws Exception {
-        final AtomicInteger totalVote = new AtomicInteger(0);
-        final ThreadPoolExecutor executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 2, Runtime.getRuntime().availableProcessors() * 2,
+        final ThreadPoolExecutor executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 20
+                , Runtime.getRuntime().availableProcessors() * 20,
                 60L, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>(100), new ThreadPoolExecutor.CallerRunsPolicy());
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -40,6 +40,7 @@ public class ChinaSoftIVoteHttpClient {
             }
         });
 
+        final AtomicInteger totalVote = new AtomicInteger(0);
         List<String> ipFile = Files.readLines(new File("/Users/reeboo/ip"), Charset.forName("UTF-8"));
         for (final String ipPort : ipFile) {
             final Map<String, String> para = Maps.newHashMap();
@@ -54,10 +55,11 @@ public class ChinaSoftIVoteHttpClient {
                                 .post("http://enterprises.chinasourcing.org.cn/Vote/AnswerSave", para);
                         VoteResult result = JsonUtil.unmarshalFromString(response, VoteResult.class);
                         if (result == null || result.getErrcode() < 0) {
+                            System.err.println(String.format("%s is fired",ipPort));
                             break;
                         }
                         totalVote.getAndIncrement();
-                        logger.debug("===========" + totalVote.get());
+                        System.out.println(String.format("%s request %s次",ipPort,totalVote.get()));
                     }
                 }
             });
