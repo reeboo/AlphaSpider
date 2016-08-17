@@ -55,11 +55,12 @@ public class ChinaSoftIVoteHttpClient {
                                 .post("http://enterprises.chinasourcing.org.cn/Vote/AnswerSave", para);
                         VoteResult result = JsonUtil.unmarshalFromString(response, VoteResult.class);
                         if (result == null || result.getErrcode() < 0) {
-                            System.err.println(String.format("%s is fired",ipPort));
+                            System.err.println(String.format("%s is fired", ipPort));
                             break;
                         }
                         totalVote.getAndIncrement();
-                        System.out.println(String.format("%s request %s次",ipPort,totalVote.get()));
+                        if (totalVote.get() % 100 == 0)
+                            System.out.println(String.format("%s request %s次", ipPort, totalVote.get()));
                     }
                 }
             });

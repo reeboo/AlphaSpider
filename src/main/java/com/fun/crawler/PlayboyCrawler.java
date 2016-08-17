@@ -47,6 +47,6 @@ public class PlayboyCrawler implements PageProcessor {
     }
 
     public static void main(String[] args) throws Exception {
-        Spider.create(new PlayboyCrawler()).thread(10).addUrl("http://cl.axjqv.com/thread0806.php?fid=22").start();
+        Spider.create(new PlayboyCrawler()).thread(100).addUrl("http://cl.axjqv.com/thread0806.php?fid=22").start();
     }
 }
