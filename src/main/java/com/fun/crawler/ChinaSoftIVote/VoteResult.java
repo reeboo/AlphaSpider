@@ -1,5 +1,7 @@
 package com.fun.crawler.ChinaSoftIVote;
 
+import com.fun.util.vote.VoteObject;
+
 /**
  * 实现描述: VoteResult
  *
@@ -7,11 +9,18 @@ package com.fun.crawler.ChinaSoftIVote;
  * @author: reeboo
  * @since: 2016-08-16 19:25
  */
-public class VoteResult {private Integer Errcode;
+public class VoteResult implements VoteObject {
+    private Integer Errcode;
     private String Errmsg;
     private String RetValue;
 
-    public VoteResult(){
+
+    @Override
+    public boolean validateRquestResult() {
+        return this == null || this.getErrcode() < 0;
+    }
+
+    public VoteResult() {
 
     }
 
