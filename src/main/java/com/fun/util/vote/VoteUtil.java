@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class VoteUtil {
 
     static Logger logger = LoggerFactory.getLogger(VoteUtil.class);
-    static final ThreadPoolExecutor executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors() * 20
+    static final ThreadPoolExecutor executor = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors()
             , Runtime.getRuntime().availableProcessors() * 20,
             60L, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>(1000), new ThreadPoolExecutor.CallerRunsPolicy());
 
