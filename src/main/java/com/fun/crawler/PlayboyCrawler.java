@@ -1,6 +1,7 @@
 package com.fun.crawler;
 
 import com.google.common.io.Files;
+import org.apache.commons.lang.StringUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -23,7 +24,7 @@ public class PlayboyCrawler implements PageProcessor {
         if (page.getUrl().get().contains("htm_data")) {
             File file = new File("/Users/reeboo/download");
             String url = page.getHtml().xpath("//a[@style='cursor:pointer']/@onclick").get();
-            if (null != url) {
+            if (StringUtils.isNotBlank(url) && url.contains("=")) {
                 url = url.split("=")[1].replaceAll("'", "");
                 if (url.contains("iframeload") && url.contains("www")) {
                     try {
