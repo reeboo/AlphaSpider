@@ -21,6 +21,35 @@ import java.nio.charset.Charset;
 public class PlayboyCrawler implements PageProcessor {
     @Override
     public void process(Page page) {
+        extractURL(page);
+        addRequest(page);
+    }
+
+    @Override
+    public Site getSite() {
+        return Site.me().setRetryTimes(30).setCharset("UTF-8").setTimeOut(60 * 1000)
+                .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31")
+                .setSleepTime(0);
+    }
+
+    /**
+     * 添加后续请求
+     *
+     * @param page
+     */
+    private void addRequest(Page page) {
+        if (page.getUrl().get().contains("http://cl.axjqv.com/thread")) {
+            page.addTargetRequests(page.getHtml().links().regex("http://cl\\.axjqv\\.com/thread.*page=.*").all());
+            page.addTargetRequests(page.getHtml().links().regex(".*/htm_data/.*").all());
+        }
+    }
+
+    /**
+     * 提取url
+     *
+     * @param page
+     */
+    private void extractURL(Page page) {
         if (page.getUrl().get().contains("htm_data")) {
             File file = new File("/Users/reeboo/download");
             String url = page.getHtml().xpath("//a[@style='cursor:pointer']/@onclick").get();
@@ -35,16 +64,6 @@ public class PlayboyCrawler implements PageProcessor {
                 }
             }
         }
-
-        if (page.getUrl().get().contains("http://cl.axjqv.com/thread")) {
-            page.addTargetRequests(page.getHtml().links().regex("http://cl\\.axjqv\\.com/thread.*page=.*").all());
-            page.addTargetRequests(page.getHtml().links().regex(".*/htm_data/.*").all());
-        }
-    }
-
-    @Override
-    public Site getSite() {
-        return Site.me().setRetryTimes(30).setCharset("UTF-8").setTimeOut(60 * 1000).setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31").setSleepTime(0);
     }
 
     public static void main(String[] args) throws Exception {
