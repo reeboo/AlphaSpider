@@ -44,7 +44,7 @@ public class PlayboyCrawler implements PageProcessor {
 
     @Override
     public Site getSite() {
-        return Site.me().setRetryTimes(3).setCharset("UTF-8").setTimeOut(60 * 1000).setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31").setSleepTime(0);
+        return Site.me().setRetryTimes(30).setCharset("UTF-8").setTimeOut(60 * 1000).setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31").setSleepTime(0);
     }
 
     public static void main(String[] args) throws Exception {
