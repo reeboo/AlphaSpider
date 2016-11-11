@@ -1,6 +1,8 @@
 package com.fun.crawler;
 
+import com.google.common.base.Joiner;
 import com.google.common.io.Files;
+import net.sourceforge.pinyin4j.PinyinHelper;
 import org.apache.commons.lang.StringUtils;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -38,8 +40,8 @@ public class PlayboyCrawler implements PageProcessor {
      * @param page
      */
     private void addRequest(Page page) {
-        if (page.getUrl().get().contains("http://cl.axjqv.com/thread")) {
-            page.addTargetRequests(page.getHtml().links().regex("http://cl\\.axjqv\\.com/thread.*page=.*").all());
+        if (page.getUrl().get().contains("http://cl.ek9.biz/thread")) {
+            page.addTargetRequests(page.getHtml().links().regex("http://cl\\.ek9\\.biz/thread.*page=.*").all());
             page.addTargetRequests(page.getHtml().links().regex(".*/htm_data/.*").all());
         }
     }
@@ -67,6 +69,7 @@ public class PlayboyCrawler implements PageProcessor {
     }
 
     public static void main(String[] args) throws Exception {
-        Spider.create(new PlayboyCrawler()).thread(100).addUrl("http://cl.axjqv.com/thread0806.php?fid=22").start();
+        //Spider.create(new PlayboyCrawler()).thread(100).addUrl("http://cl.ek9.biz/thread0806.php?fid=22").start();
+        System.out.println(Joiner.on(",").join(PinyinHelper.toGwoyeuRomatzyhStringArray('李')));
     }
 }
